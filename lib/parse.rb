@@ -36,7 +36,7 @@ module JaxrsDoc
     
     def self.parse_content(text)
       verbs_annotations = {:gets => [], :posts => [], :puts => [], :deletes => []}
-      java_sections = text.split("{");
+      java_sections = text.split(/(?<=\s)({)/);
       type_annotations = AnnotationScanner.scan_annotations(java_sections.shift)
       java_sections.each { |section| 
         group = AnnotationScanner.scan_annotations(section) 
