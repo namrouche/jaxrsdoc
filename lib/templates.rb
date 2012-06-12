@@ -50,21 +50,19 @@ module JaxrsDoc
           </div>
     
           <div class="container">
-            <div class="row">	
-          		<div class="span12">
-          	     <h2 class="pull-left"><% if @path %><%= @path.value %><% end %></h2>
-                   <pre class="pull-right"><%= @name %></pre>
-          	    </div>	
+            <div class="page-header">	
+        	     <h1><% if @path %><%= @path.value %><% end %><pre class="pull-right"><%= @name %></pre></h1>
             </div>
     
             <% @gets.each do |annot_group| %>
               <div class="row">	
             		<div class="span12">
                     <button class="btn btn-success pull-left disabled" href="#"><%= annot_group.get.name %></button>
-                    <h3 class="pull-left"><% if annot_group.path %> <%= annot_group.path.value %> <% end %></h3>
+                    <h3 class="pagination-centered"><% if annot_group.path %> <%= annot_group.path.value %> <% end %></h3>
                   </div>	
                </div>
 
+        	     <% if not annot_group.queryparams.empty? %>
                <div class="row">	
              		<div class="span12">
                   <table class="table table-bordered table-striped">
@@ -74,23 +72,29 @@ module JaxrsDoc
             	     <thead>
             		   <tr><th>Parameter</th><th>Description</th></tr>
             	     </thead>
-                   <tr>
-                    <td><% if annot_group.queryparams(0) %> <%= annot_group.queryparams(0).value %><% end %></td>
-                    <td> description </td>
-                   </tr>
+            	     <tbody>
+            	       <% annot_group.queryparams.each do |param| %>
+                       <tr>
+                        <td><%= param.value %></td>
+                        <td> description </td>
+                       </tr>
+                     <% end %>
+                   </tbody>
                   </table>
                   </div>	
                </div>
+               <% end %>
             <% end %>
       
             <% @posts.each do |annot_group| %>
               <div class="row">	
             		<div class="span12">
                     <button class="btn btn-info pull-left disabled" href="#"><%= annot_group.post.name %></button>
-                    <h3 class="pull-left"><% if annot_group.path %> <%= annot_group.path.value %> <% end %></h3>
+                    <h3 class="pagination-centered"><% if annot_group.path %> <%= annot_group.path.value %> <% end %></h3>
                   </div>	
                </div>
 
+         	     <% if not annot_group.formparams.empty? %>
                <div class="row">	
              		<div class="span12">
                   <table class="table table-bordered table-striped">
@@ -100,13 +104,18 @@ module JaxrsDoc
             	     <thead>
             		   <tr><th>Parameter</th><th>Description</th></tr>
             	     </thead>
-                   <tr>
-                    <td><% if annot_group.formparams(0) %> <%= annot_group.formparams(0).value %><% end %></td>
-                    <td> description </td>
-                   </tr>
+                   <tbody>
+             	       <% annot_group.formparams.each do |param| %>
+                        <tr>
+                         <td><%= param.value %></td>
+                         <td> description </td>
+                        </tr>
+                    <% end %>
+                    </tbody>
                   </table>
                   </div>	
                </div>
+               <% end %>
             <% end %>
       
           <footer>Powered by JaxrsDoc @simcap</footer>  

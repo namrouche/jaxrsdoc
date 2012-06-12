@@ -44,14 +44,17 @@ rescue OptionParser::InvalidOption, OptionParser::InvalidArgument, OptionParser:
   exit
 end
 
-puts "Retrieving #{options[:pattern]} files recursively from #{options[:sources]}"
+puts "Looking files recursively from #{options[:sources]}"
 matched_files = Dir.glob("#{options[:sources]}/**/#{options[:pattern]}").select{ |entry| File.file?(entry) }
-puts "Found #{matched_files.size} files resources"
+puts "Found #{matched_files.size} files resources matching '#{options[:pattern]}'"
 
-processed_resources = matched_files.map {|file| JaxrsDoc::ResourceParser.parse(File.new(file))}
+processed_resources = matched_files.map {|file| 
+  resource = JaxrsDoc::ResourceParser.parse(File.new(file)) 
+  if resource.valid? then resource else nil end
+}.select {|resource| not resource.nil? }
 puts "Processed #{processed_resources.size} file resources"
 
-puts "Generating site at "
+puts "Generating site at #{Dir.pwd}"
 JaxrsDoc::Site.new(processed_resources, Dir.pwd, {:project_version => options[:project_version], :project_name => options[:project_name]}).generate
 
 

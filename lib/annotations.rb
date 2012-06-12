@@ -13,6 +13,10 @@ module JaxrsDoc
       @verbs = verbs_annotations
     end
     
+    def valid?
+      not @path.nil?
+    end
+    
     # Support ERB templating of member data.
     def get_binding
       binding
@@ -29,11 +33,11 @@ module JaxrsDoc
     end
     
     def method_missing(method_name, *args)
-      if((not args.empty?) and method_name.to_s.end_with?"s")
+      if(method_name.to_s.include?"params")
         annotation_name = method_name.to_s[0..-2]
         annots = @annotations.select{|a| annotation_name.eql?(a.name.downcase) }
-        return annots[args.first]
-      else  
+        if (annots.empty?) then return [] else return annots end
+      else
         @annotations.each {|a|
           if (method_name.to_s.eql?(a.name.downcase)) then return a end
         }
