@@ -20,12 +20,15 @@ module JaxrsDoc
               </div>
             </div>
             <div class="container">
-              <ul>
-              <% @resources.each do |resource| %>
-                <li><a href="<%= resource.name %>.html"> <% if resource.path %><%= resource.path.value %><% end %></a></li>
+              <% @resources.each_slice(20) do |big_packets_of_resources| %>
+                <div class="row">
+                <% big_packets_of_resources.each_slice(10) do |small_packets_of_resources|%>
+                  <div class="span6">
+                    <pre><ul><% small_packets_of_resources.each do |resource|%><li><a href="<%= resource.name %>.html"> <% if resource.path %><%= resource.path.value %><% end %></a></li><% end%></ul></pre>
+                  </div>
+                <% end %>
+                </div>
               <% end%>
-              </ul>
-          
             <footer>Powered by JaxrsDoc @simcap</footer>  
             </div>
           <body>

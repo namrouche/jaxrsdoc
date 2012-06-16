@@ -1,6 +1,7 @@
 module JaxrsDoc
   
   class Resource
+    include Comparable
     
     attr_reader :name, :path, :verbs, :gets, :posts, :consumes
     
@@ -15,6 +16,14 @@ module JaxrsDoc
     
     def valid?
       not @path.nil?
+    end
+    
+    def <=>(another)
+      path.value <=> another.path.value
+    end
+    
+    def to_s
+      "#{@name} [#{@path.value}]"  
     end
     
     # Support ERB templating of member data.
@@ -34,8 +43,7 @@ module JaxrsDoc
     
     def method_missing(method_name, *args)
       if(method_name.to_s.include?"params")
-        annots = @annotations.select{|a| /\b(Form|FormData|Query)Param\b/ =~ a.name }
-        if (annots.empty?) then return [] else return annots end
+        return @annotations.select{|a| /\b(Form|FormData|Query)Param\b/ =~ a.name }
       else
         @annotations.each {|a|
           if (method_name.to_s.eql?(a.name.downcase)) then return a end
@@ -77,7 +85,6 @@ module JaxrsDoc
   
   
   class Annotation
-    include Comparable
     
     attr_reader :name, :values, :value
     

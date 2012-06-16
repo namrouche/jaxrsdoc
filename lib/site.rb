@@ -9,7 +9,7 @@ module JaxrsDoc
     attr_reader :resources, :project_version, :project_name
     
     def initialize(resources, output_location, options = {})
-      @resources = resources
+      @resources = resources.sort!
       @project_version = options[:project_version]
       @project_name = options[:project_name]
       make_output_dir(output_location)
