@@ -19,7 +19,7 @@ module JaxrsDoc
     def generate
       @resources.each { |resource|
         File.open(resource_file_path(resource.name), "w") { |f|
-            content = ERB.new(JaxrsDoc::Templates.get_resource_page).result(resource.get_binding)
+            content = ERB.new(JaxrsDoc::Templates.get_resource_page).result(binding)
             f.syswrite(content)
         }
       }
@@ -48,7 +48,9 @@ module JaxrsDoc
 
     def copy_resources_to_output_dir
       bootstrap_file_path = File.expand_path("../../site/bootstrap.css", __FILE__)
+      jaxrsdoc_css_file_path = File.expand_path("../../site/jaxrsdoc.css", __FILE__)
       FileUtils.cp(bootstrap_file_path, File.join(@output_dir.path, "bootstrap.css"))
+      FileUtils.cp(jaxrsdoc_css_file_path, File.join(@output_dir.path, "jaxrsdoc.css"))
     end
   end    
 end

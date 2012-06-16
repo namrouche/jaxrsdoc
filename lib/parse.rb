@@ -5,7 +5,7 @@ module JaxrsDoc
   module AnnotationScanner
     
     JAXRS_ANNOTATIONS = %w[ ApplicationPath Consumes CookieParam DefaultValue 
-                            DELETE Encoded FormParam GET HEAD HeaderParam 
+                            DELETE Encoded FormParam FormDataParam GET HEAD HeaderParam 
                             HttpMethod MatrixParam OPTIONS Path PathParam
                             POST Produces PUT QueryParam ]
         

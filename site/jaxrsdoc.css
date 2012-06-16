@@ -1,0 +1,19 @@
+.get {
+	margin-bottom: 0.5em;
+	background-color: #D6EAD6;
+}
+
+.post {
+	margin-bottom: 0.5em;
+	background-color: #D7EEF4;
+}
+
+.put {
+	margin-bottom: 0.5em;
+	background-color: #999999;
+}
+
+.delete {
+	margin-bottom: 0.5em;
+	background-color: #999999;
+}

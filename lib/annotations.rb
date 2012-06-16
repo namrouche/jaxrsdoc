@@ -34,8 +34,7 @@ module JaxrsDoc
     
     def method_missing(method_name, *args)
       if(method_name.to_s.include?"params")
-        annotation_name = method_name.to_s[0..-2]
-        annots = @annotations.select{|a| annotation_name.eql?(a.name.downcase) }
+        annots = @annotations.select{|a| /\b(Form|FormData|Query)Param\b/ =~ a.name }
         if (annots.empty?) then return [] else return annots end
       else
         @annotations.each {|a|
