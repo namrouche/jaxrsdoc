@@ -14,8 +14,10 @@ module JaxrsDoc
               <div class="navbar-inner">
                 <div class="container">
                   <a class="brand" href="#"><%= @project_name %> - version <%= @project_version %></a>
-                  <p class="navbar-text pull-right">Updated <%= Time.now.strftime("%d %B - %H:%M:%S") %></p>
-                  <p class="navbar-text pull-right"><a href="index.html">Index</a></p>
+                  <ul class="nav">
+                    <li class="active"><a href="index.html">API index</a></li>
+                  </ul>
+                  <p class="navbar-text pull-right">Last update <%= Time.now.strftime("%d %B - %H:%M:%S") %></p>
                 </div>
               </div>
             </div>
@@ -29,7 +31,7 @@ module JaxrsDoc
                 <% end %>
                 </div>
               <% end%>
-            <footer>Powered by JaxrsDoc @simcap</footer>  
+            <footer class="modal-footer"><span>Powered by JaxrsDoc @simcap</span></footer>  
             </div>
           <body>
         </html>
@@ -122,8 +124,6 @@ module JaxrsDoc
                </div>
                <% end %>
             <% end %>
-      
-          <footer>Powered by JaxrsDoc @simcap</footer>  
           </div>
         <body>
       </html>
