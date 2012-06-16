@@ -24,7 +24,22 @@ module JaxrsDoc
       Regexp.new("@(#{regexp.join('|')})")
     end
     
-  end  
+  end
+  
+  module ParamDescriptionScanner
+    
+    def self.scan_params_descriptions(text)
+      params_descriptions = Hash.new("")
+      text.each_line { |line|
+        if(param_index = line.index("@param"))
+          param_name, param_desc = line[(param_index + 6)..-1].split(" ", 2);
+          params_descriptions.store(param_name, param_desc)
+        end
+      }
+      params_descriptions
+    end
+    
+  end 
   
   module ResourceParser
     include AnnotationScanner
@@ -36,10 +51,14 @@ module JaxrsDoc
     
     def self.parse_content(text)
       verbs_annotations = {:gets => [], :posts => [], :puts => [], :deletes => []}
+      descriptions = {}
       java_sections = text.split(/(?<=\s)({)/);
-      type_annotations = AnnotationScanner.scan_annotations(java_sections.shift)
+      resource_head_section = java_sections.shift
+      type_annotations = AnnotationScanner.scan_annotations(resource_head_section)
+      type_description = parse_resource_description(resource_head_section)
       java_sections.each { |section| 
-        group = AnnotationScanner.scan_annotations(section) 
+        group = AnnotationScanner.scan_annotations(section)
+        descriptions.update(ParamDescriptionScanner.scan_params_descriptions(section))
         unless group.empty?
           verbs_annotations[:gets] << group if(group.is_get_group?)
           verbs_annotations[:posts] << group if(group.is_post_group?)
@@ -47,7 +66,16 @@ module JaxrsDoc
           verbs_annotations[:deletes] << group if(group.is_delete_group?)
         end
       }
-      JaxrsDoc::Resource.new(@filename, type_annotations, verbs_annotations)
-    end      
+      JaxrsDoc::Resource.new(@filename, type_annotations, verbs_annotations, type_description, descriptions)
+    end 
+    
+    private
+    
+    def self.parse_resource_description(head_text_section)
+      if (description_match = /^\/\*\*(.+)\*\/$/m.match(head_text_section))
+        description_match[1].gsub("*", "")
+      end      
+    end
+         
   end
 end

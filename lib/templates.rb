@@ -57,9 +57,16 @@ module JaxrsDoc
           </div>
     
           <div class="container">
+          
             <div class="page-header">	
         	     <h1><% if resource.path %><%= resource.path.value %><% end %><pre class="pull-right"><%= resource.name %></pre></h1>
             </div>
+            
+            <% if resource.description %>
+            <div>
+              <pre><%= resource.description %></pre>
+            </div>
+            <% end %>
     
             <% resource.gets.each do |annot_group| %>
               <div class="row">	
@@ -83,7 +90,7 @@ module JaxrsDoc
             	       <% annot_group.queryparams.each do |param| %>
                        <tr>
                         <td><%= param.value %></td>
-                        <td> description </td>
+                        <td><%= resource.params_descriptions[param.value] %></td>
                        </tr>
                      <% end %>
                    </tbody>
@@ -115,7 +122,7 @@ module JaxrsDoc
              	       <% annot_group.params.each do |param| %>
                         <tr>
                          <td><%= param.value %></td>
-                         <td> description </td>
+                         <td><%= resource.params_descriptions[param.value] %></td>
                         </tr>
                     <% end %>
                     </tbody>

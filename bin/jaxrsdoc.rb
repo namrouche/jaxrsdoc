@@ -10,7 +10,7 @@ optparse = OptionParser.new do |opts|
   
   options[:pattern] = "*Resource.java"
   opts.on( '-p', '--pattern PATTERN', 'Pattern of your Jaxrs file java resource. Default is: "*Resource.java".' ) do |pattern|
-    options[:pattern] = pattern || "*Resource.java"
+    options[:pattern] = pattern
   end
   
   opts.on( '-o', '--output OUTPUT', 'Location of your generated site folder. Default is current directory.' ) do |output|
