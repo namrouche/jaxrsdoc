@@ -45,14 +45,10 @@ module JaxrsDoc
     
     def method_missing(method_name, *args)
       if(method_name.to_s.include?"params")
-        return @annotations.select{|a| /\b(Form|FormData|Query)Param\b/ =~ a.name }
+        @annotations.select{|a| /\b(Form|FormData|Query)Param\b/ =~ a.name }
       else
-        @annotations.each {|a|
-          if (method_name.to_s.eql?(a.name.downcase)) then return a end
-        }
+        @annotations.find {|a| method_name.to_s.eql?(a.name.downcase) }
       end
-      return nil
-      #raise "No jaxrs annotation with name '#{annotation_called}' in annotation group"
     end
     
     def to_s
@@ -67,20 +63,20 @@ module JaxrsDoc
       @annotations.size
     end
     
-    def is_get_group?
-      @annotations.each {|a| return "GET".eql?a.name }
+    def get_group?
+      @annotations.any? {|a| "GET".eql?a.name }
     end
 
-    def is_post_group?
-      @annotations.each {|a| return "POST".eql?a.name }
+    def post_group?
+      @annotations.any? {|a| "POST".eql?a.name }
     end
 
-    def is_put_group?
-      @annotations.each {|a| return "PUT".eql?a.name }
+    def put_group?
+      @annotations.any? {|a| "PUT".eql?a.name }
     end
 
-    def is_delete_group?
-      @annotations.each {|a| return "DELETE".eql?a.name }
+    def delete_group?
+      @annotations.any? {|a| "DELETE".eql?a.name }
     end
     
   end
@@ -104,13 +100,13 @@ module JaxrsDoc
     
     def parse_values
       @values = []
-      match_value = /\((.*)\)/.match(@text)
-      if(match_value.nil?) then return end
-      values_text = match_value[1].split(",")
-      values_text.each { |v|
-        @values << v.delete("\"").delete("'").strip
-      }
-      @value = values_text.first.delete("\"").delete("'").strip 
+      if(matches = /\((.*)\)/.match(@text))
+        tokens = matches[1].split(",")
+        tokens.each { |v|
+          @values << v.gsub(/\"|'/, "").strip
+        }
+        @value = tokens.first.gsub(/\"|'/, "").strip 
+      end
     end
     
   end
