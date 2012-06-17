@@ -31,7 +31,7 @@ module JaxrsDoc
                 <% end %>
                 </div>
               <% end%>
-            <footer class="modal-footer"><span>Powered by JaxrsDoc @simcap</span></footer>  
+            <footer class="modal-footer"><span>Powered by <a href="https://github.com/simcap/jaxrsdoc">Jaxrsdoc</a></span></footer>  
             </div>
           <body>
         </html>

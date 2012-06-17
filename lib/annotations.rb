@@ -51,10 +51,6 @@ module JaxrsDoc
       end
     end
     
-    def to_s
-      @annotations.to_s
-    end
-    
     def empty?
       @annotations.empty?
     end
@@ -63,22 +59,10 @@ module JaxrsDoc
       @annotations.size
     end
     
-    def get_group?
-      @annotations.any? {|a| "GET".eql?a.name }
+    def to_s
+      @annotations.to_s
     end
 
-    def post_group?
-      @annotations.any? {|a| "POST".eql?a.name }
-    end
-
-    def put_group?
-      @annotations.any? {|a| "PUT".eql?a.name }
-    end
-
-    def delete_group?
-      @annotations.any? {|a| "DELETE".eql?a.name }
-    end
-    
   end
   
   

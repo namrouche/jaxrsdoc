@@ -60,10 +60,10 @@ module JaxrsDoc
         group = AnnotationScanner.scan_annotations(section)
         descriptions.update(ParamDescriptionScanner.scan_params_descriptions(section))
         unless group.empty?
-          verbs_annotations[:gets] << group if(group.get_group?)
-          verbs_annotations[:posts] << group if(group.post_group?)
-          verbs_annotations[:puts] << group if(group.put_group?)
-          verbs_annotations[:deletes] << group if(group.delete_group?)
+          verbs_annotations[:gets] << group if(group.get)
+          verbs_annotations[:posts] << group if(group.post)
+          verbs_annotations[:puts] << group if(group.put)
+          verbs_annotations[:deletes] << group if(group.delete)
         end
       }
       JaxrsDoc::Resource.new(@filename, type_annotations, verbs_annotations, type_description, descriptions)
