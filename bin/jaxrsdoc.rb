@@ -2,6 +2,7 @@
 require File.expand_path("../../lib/parse.rb", __FILE__)
 require File.expand_path("../../lib/site.rb", __FILE__)
 require 'optparse'
+require "rexml/document"
 
 options = {}
 optparse = OptionParser.new do |opts|
@@ -17,13 +18,16 @@ optparse = OptionParser.new do |opts|
     options[:output_path] = output
   end
 
-  options[:project_name] = "JaxrsDoc"
-  opts.on( '-p', '--project PROJECT', 'Name of the project to be included on the website.' ) do |project_name|
-    options[:project_name] = project_name
+  opts.on( '-m', '--maven', 'Indicates a maven project. Project name & version will be derived from the first pom.xml found' ) do |maven|
+    options[:maven] = true
   end
 
-  opts.on( '-v', '--version VERSION', 'Version of your project to be included on the website.' ) do |project_version|
-    options[:project_version] = project_version
+  opts.on( '-a', '--artifact ARTIFACT', 'Name of the artifact/project/module to be included on the website banner.' ) do |artifact_name|
+    options[:artifact_name] = artifact_name
+  end
+
+  opts.on( '-v', '--version VERSION', 'Version of your artifact/project/module to be included on the website banner.' ) do |artifact_version|
+    options[:artifact_version] = artifact_version
   end
   
   opts.on( '-s', '--sources SOURCES', 'Directory that locates your java resources. Default is current directory.' ) do |sources|
@@ -54,7 +58,17 @@ processed_resources = matched_files.map {|file|
 }.select {|resource| not resource.nil? }
 puts "Processed #{processed_resources.size} file resources"
 
+project_version = options[:artifact_version]
+project_name = options[:artifact_name]
+
+if(options[:maven]) then
+  pom_xml = Dir.glob("#{options[:sources]}/**/pom.xml").first
+  pom = REXML::Document.new File.new(pom_xml)
+  project_name = pom.elements["//artifactId"].first 
+  project_version = pom.elements["//version"].first
+end
+
 puts "Generating site at #{Dir.pwd}"
-JaxrsDoc::Site.new(processed_resources, Dir.pwd, {:project_version => options[:project_version], :project_name => options[:project_name]}).generate
+JaxrsDoc::Site.new(processed_resources, Dir.pwd, {:project_version => project_version, :project_name => project_name}).generate
 
 

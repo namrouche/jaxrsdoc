@@ -13,7 +13,7 @@ module JaxrsDoc
             <div class="navbar">
               <div class="navbar-inner">
                 <div class="container">
-                  <a class="brand" href="#"><%= @project_name %> - version <%= @project_version %></a>
+                  <a class="brand" href="#"><%= @project_name %> <%= @project_version %></a>
                   <ul class="nav">
                     <li class="active"><a href="index.html">API index</a></li>
                   </ul>
@@ -49,9 +49,11 @@ module JaxrsDoc
           <div class="navbar">
             <div class="navbar-inner">
               <div class="container">
-                <a class="brand" href="#"><%= @project_name %> - version <%= @project_version %></a>
+                <a class="brand" href="#"><%= @project_name %> <%= @project_version %></a>
+                <ul class="nav">
+                  <li class="active"><a href="index.html">API index</a></li>
+                </ul>
                 <p class="navbar-text pull-right">Updated <%= Time.now.strftime("%d %B - %H:%M:%S") %></p>
-                <p class="navbar-text pull-right"><a href="index.html">Index</a></p>
               </div>
             </div>
           </div>

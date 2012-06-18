@@ -41,8 +41,11 @@ module JaxrsDoc
     end
     
     def make_output_dir(output_location)
-      output_path = "#{output_location}/site-jaxrsdoc/"
-      Dir.mkdir(output_path) if Dir[output_path].empty?
+      output_path = "#{output_location}"
+      output_path << "/jaxrsdoc"
+      output_path << "/#{@project_name}" unless @project_name.nil?
+      output_path << "/#{@project_version}/" unless @project_version.nil?
+      FileUtils.mkdir_p(output_path)
       @output_dir = Dir.new(output_path)
     end
 

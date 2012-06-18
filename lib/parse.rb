@@ -55,6 +55,7 @@ module JaxrsDoc
       java_sections = text.split(/(?<=\s)({)/);
       resource_head_section = java_sections.shift
       type_annotations = AnnotationScanner.scan_annotations(resource_head_section)
+      descriptions.update(ParamDescriptionScanner.scan_params_descriptions(resource_head_section))
       type_description = parse_resource_description(resource_head_section)
       java_sections.each { |section| 
         group = AnnotationScanner.scan_annotations(section)
@@ -73,7 +74,12 @@ module JaxrsDoc
     
     def self.parse_resource_description(head_text_section)
       if (description_match = /^\/\*\*(.+)\*\/$/m.match(head_text_section))
-        description_match[1].gsub("*", "")
+        full_text = description_match[1].gsub("*", "")
+        description = ""
+        full_text.each_line { |line|
+          description << line unless line.include?("@param")
+        }
+        description
       end      
     end
          

@@ -20,6 +20,10 @@ module JaxrsDoc
       not @path.nil?
     end
     
+    def add_param_description(param_description)
+      @params_descriptions.update(param_description)
+    end
+    
     def <=>(another)
       path.value <=> another.path.value
     end
