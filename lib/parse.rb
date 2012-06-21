@@ -73,7 +73,11 @@ module JaxrsDoc
     private
     
     def self.parse_resource_description(head_text_section)
-      if (description_match = /^\/\*\*(.+)\*\/$/m.match(head_text_section))
+      from_package_only_head_section = head_text_section.each_line.drop_while {|line|
+        not line.strip.start_with?("package")
+      }.join
+      
+      if (description_match = /^\/\*\*(.+)\*\/$/m.match(from_package_only_head_section))
         full_text = description_match[1].gsub("*", "")
         description = ""
         full_text.each_line { |line|
