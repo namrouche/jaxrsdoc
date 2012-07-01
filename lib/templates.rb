@@ -133,6 +133,72 @@ module JaxrsDoc
                </div>
                <% end %>
             <% end %>
+            
+            <% resource.puts.each do |annot_group| %>
+              <div class="row">	
+            		<div class="put span12">
+                    <button class="btn btn-warning pull-left disabled" href="#"><%= annot_group.put.name %></button>
+                    <h3 class="pagination-centered"><% if annot_group.path %> <%= annot_group.path.value %> <% end %></h3>
+                  </div>	
+               </div>
+
+         	     <% unless annot_group.params.empty? %>
+               <div class="row">	
+             		<div class="span12">
+                  <table class="table table-bordered table-striped">
+            		   <colgroup>
+            		    <col class="span1">
+            		   </colgroup>
+            	     <thead>
+            		   <tr><th>Parameter</th><th>Description</th></tr>
+            	     </thead>
+                   <tbody>
+             	       <% annot_group.params.each do |param| %>
+                        <tr>
+                         <td><%= param.value %></td>
+                         <td><%= resource.params_descriptions[param.value] %></td>
+                        </tr>
+                    <% end %>
+                    </tbody>
+                  </table>
+                  </div>	
+               </div>
+               <% end %>
+            <% end %>
+            
+            <% resource.deletes.each do |annot_group| %>
+              <div class="row">	
+            		<div class="post span12">
+                    <button class="btn btn-danger pull-left disabled" href="#"><%= annot_group.delete.name %></button>
+                    <h3 class="pagination-centered"><% if annot_group.path %> <%= annot_group.path.value %> <% end %></h3>
+                  </div>	
+               </div>
+
+         	     <% unless annot_group.params.empty? %>
+               <div class="row">	
+             		<div class="span12">
+                  <table class="table table-bordered table-striped">
+            		   <colgroup>
+            		    <col class="span1">
+            		   </colgroup>
+            	     <thead>
+            		   <tr><th>Parameter</th><th>Description</th></tr>
+            	     </thead>
+                   <tbody>
+             	       <% annot_group.params.each do |param| %>
+                        <tr>
+                         <td><%= param.value %></td>
+                         <td><%= resource.params_descriptions[param.value] %></td>
+                        </tr>
+                    <% end %>
+                    </tbody>
+                  </table>
+                  </div>	
+               </div>
+               <% end %>
+            <% end %>
+            
+            
           </div>
         <body>
       </html>

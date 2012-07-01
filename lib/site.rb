@@ -6,7 +6,7 @@ module JaxrsDoc
   
   class Site
     
-    attr_reader :resources, :project_version, :project_name
+    attr_reader :resources, :project_version, :project_name, :output_dir
     
     def initialize(resources, output_location, options = {})
       @resources = resources.sort!
@@ -28,6 +28,7 @@ module JaxrsDoc
           content = ERB.new(JaxrsDoc::Templates.get_index_page).result(binding)
           f.syswrite(content)
       }
+      @output_dir
     end
     
     private
@@ -44,7 +45,7 @@ module JaxrsDoc
       output_path = "#{output_location}"
       output_path << "/jaxrsdoc"
       output_path << "/#{@project_name}" unless @project_name.nil?
-      output_path << "/#{@project_version}/" unless @project_version.nil?
+      output_path << "/#{@project_version}" unless @project_version.nil?
       FileUtils.mkdir_p(output_path)
       @output_dir = Dir.new(output_path)
     end

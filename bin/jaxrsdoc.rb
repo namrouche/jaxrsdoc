@@ -6,19 +6,15 @@ require "rexml/document"
 
 options = {}
 optparse = OptionParser.new do |opts|
-  opts.banner = "USAGE\n jaxrsdoc [-p] [-]"
+  opts.banner = "USAGE\n jaxrsdoc [options] source_location"
   opts.separator "\nOPTIONS\n"
   
   options[:pattern] = "*Resource.java"
-  opts.on( '-p', '--pattern PATTERN', 'Pattern of your Jaxrs file java resource. Default is: "*Resource.java".' ) do |pattern|
+  opts.on( '-p', '--pattern PATTERN', 'Naming pattern of your Jaxrs annotated files java resources. Default is: "*Resource.java".' ) do |pattern|
     options[:pattern] = pattern
   end
-  
-  opts.on( '-o', '--output OUTPUT', 'Location of your generated site folder. Default is current directory.' ) do |output|
-    options[:output_path] = output
-  end
 
-  opts.on( '-m', '--maven', 'Indicates a maven project. Project name & version will be derived from the first pom.xml found' ) do |maven|
+  opts.on( '-m', '--maven', 'Indicates a maven project. Project name & version will be derived the pom.xml at the directory level' ) do |maven|
     options[:maven] = true
   end
 
@@ -28,10 +24,6 @@ optparse = OptionParser.new do |opts|
 
   opts.on( '-v', '--version VERSION', 'Version of your artifact/project/module to be included on the website banner.' ) do |artifact_version|
     options[:artifact_version] = artifact_version
-  end
-  
-  opts.on( '-s', '--sources SOURCES', 'Directory that locates your java resources. Default is current directory.' ) do |sources|
-    options[:sources] = sources
   end
   
   opts.on( '-h', '--help', 'Display this screen' ) do
@@ -48,27 +40,31 @@ rescue OptionParser::InvalidOption, OptionParser::InvalidArgument, OptionParser:
   exit
 end
 
-puts "Looking files recursively from #{options[:sources]}"
-matched_files = Dir.glob("#{options[:sources]}/**/#{options[:pattern]}").select{ |entry| File.file?(entry) }
-puts "Found #{matched_files.size} files resources matching '#{options[:pattern]}'"
+resources_location = ARGV.first
+
+puts "Looking files recursively at #{resources_location}"
+matched_files = Dir.glob("#{resources_location}/**/#{options[:pattern]}").select{ |entry| File.file?(entry) }
+puts "Found #{matched_files.size} files matching '#{options[:pattern]}'"
 
 processed_resources = matched_files.map {|file| 
-  resource = JaxrsDoc::ResourceParser.parse(File.new(file)) 
-  if resource.valid? then resource else nil end
-}.select {|resource| not resource.nil? }
-puts "Processed #{processed_resources.size} file resources"
+  JaxrsDoc::ResourceParser.parse(File.new(file))
+}.select {|resource| resource.valid? and not resource.nil? }
+puts "Processed #{processed_resources.size} files with a @Path type annotation"
 
 project_version = options[:artifact_version]
 project_name = options[:artifact_name]
 
 if(options[:maven]) then
-  pom_xml = Dir.glob("#{options[:sources]}/**/pom.xml").first
+  puts "Looking for a pom.xml file at #{resources_location}"
+  pom_xml = Dir.glob("#{resources_location}/pom.xml").first
   pom = REXML::Document.new File.new(pom_xml)
   project_name = pom.elements["//artifactId"].first 
   project_version = pom.elements["//version"].first
+  puts "Found maven project with name: #{project_name}, version: #{project_version}"
 end
 
-puts "Generating site at #{Dir.pwd}"
-JaxrsDoc::Site.new(processed_resources, Dir.pwd, {:project_version => project_version, :project_name => project_name}).generate
+output_dir = JaxrsDoc::Site.new(processed_resources, Dir.pwd, {:project_version => project_version, :project_name => project_name}).generate
+
+puts "Site generated. Open #{output_dir.path}/index.html"
 
 

@@ -3,7 +3,7 @@ module JaxrsDoc
   class Resource
     include Comparable
     
-    attr_reader :name, :description, :params_descriptions, :path, :verbs, :gets, :posts, :consumes
+    attr_reader :name, :description, :params_descriptions, :path, :verbs, :gets, :posts, :puts, :deletes, :consumes
     
     def initialize(file_name, type_annotations, verbs_annotations = {}, type_description = nil, params_descriptions = {})
       @name = file_name
@@ -13,6 +13,8 @@ module JaxrsDoc
       @consumes = type_annotations.annotations.find {|a| a.name.eql?"Consumes"}
       @gets = verbs_annotations[:gets]
       @posts = verbs_annotations[:posts]
+      @puts = verbs_annotations[:puts]
+      @deletes = verbs_annotations[:deletes]
       @verbs = verbs_annotations
     end
     
