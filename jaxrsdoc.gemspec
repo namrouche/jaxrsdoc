@@ -10,6 +10,6 @@ Gem::Specification.new do |s|
   s.summary = %q{Website bootstrap style generator for your JAXRS REST API doc}
 
   s.rubyforge_project = "jaxrsdoc"
-  s.files = ["lib/annotations.rb", "lib/parse.rb", "lib/site.rb", "lib/templates.rb", "site/bootstrap.css", "site/jaxrsdoc.css"]
-  s.executables = ["bin/jaxrsdoc"]
+  s.files = ["bin/jaxrsdoc", "lib/annotations.rb", "lib/jaxrsdoc_version.rb", "lib/parse.rb", "lib/site.rb", "lib/templates.rb", "site/bootstrap.css", "site/jaxrsdoc.css"]
+  s.executables = ["jaxrsdoc"]
 end
