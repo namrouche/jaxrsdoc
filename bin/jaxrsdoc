@@ -1,35 +1,60 @@
 #!/usr/bin/env ruby
 require File.expand_path("../../lib/parse.rb", __FILE__)
 require File.expand_path("../../lib/site.rb", __FILE__)
+require File.expand_path("../../lib/jaxrsdoc_version.rb", __FILE__)
 require 'optparse'
 require "rexml/document"
 
 options = {}
+
+usage_examples = <<EX
+    # Generate site from the project sources
+    $ jaxrsdoc /Users/me/projects/mysources
+
+    # Generate site from the project sources specifying a name and version 
+    $ jaxrsdoc -a MyPetProject -r 1.0.2 /Users/me/projects/mysources
+
+    # Generate site from a Maven project
+    $ jaxrsdoc -m /Users/me/projects/mysources
+
+    # Generate site for the project with a specific pattern matching of the REST resources
+    $ jaxrsdoc -m -p "*ResourceEntity.java" /Users/me/projects/mysources
+EX
+
 optparse = OptionParser.new do |opts|
-  opts.banner = "USAGE\n jaxrsdoc [options] source_location"
+  opts.banner = "USAGE\n jaxrsdoc [options] project_sources_location"
   opts.separator "\nOPTIONS\n"
   
   options[:pattern] = "*Resource.java"
-  opts.on( '-p', '--pattern PATTERN', 'Naming pattern of your Jaxrs annotated files java resources. Default is: "*Resource.java".' ) do |pattern|
+  opts.on( '-p', '--pattern PATTERN', 'Pattern of the Jaxrs annotated files java resources. Default is: "*Resource.java"' ) do |pattern|
     options[:pattern] = pattern
   end
 
-  opts.on( '-m', '--maven', 'Indicates a maven project. Project name & version will be derived the pom.xml at the directory level' ) do |maven|
+  opts.on( '-m', '--maven', 'Specify a maven project. Project name & version will be derived from the pom.xml found at the directory level' ) do |maven|
     options[:maven] = true
   end
 
-  opts.on( '-a', '--artifact ARTIFACT', 'Name of the artifact/project/module to be included on the website banner.' ) do |artifact_name|
-    options[:artifact_name] = artifact_name
+  opts.on('-a', '--project-name NAME', 'Custom name of the project to be included on the website banner' ) do |project_name|
+    options[:project_name] = project_name
   end
 
-  opts.on( '-v', '--version VERSION', 'Version of your artifact/project/module to be included on the website banner.' ) do |artifact_version|
-    options[:artifact_version] = artifact_version
+  opts.on('-r', '--project-version VERSION', 'Custom version of the project to be included on the website banner' ) do |project_version|
+    options[:project_version] = project_version
+  end
+
+  opts.on('-v', '--version', 'Current version of Jaxrsdoc executable' ) do
+    puts "Jaxrsdoc version: #{JaxrsDoc::VERSION}"
+    exit
   end
   
   opts.on( '-h', '--help', 'Display this screen' ) do
     puts opts
+    puts usage_examples
     exit
   end
+  
+  opts.separator "\nEXAMPLES"
+  
 end
 
 begin
@@ -51,8 +76,8 @@ processed_resources = matched_files.map {|file|
 }.select {|resource| resource.valid? and not resource.nil? }
 puts "Processed #{processed_resources.size} files with a @Path type annotation"
 
-project_version = options[:artifact_version]
-project_name = options[:artifact_name]
+project_version = options[:project_version]
+project_name = options[:project_name]
 
 if(options[:maven]) then
   puts "Looking for a pom.xml file at #{resources_location}"
