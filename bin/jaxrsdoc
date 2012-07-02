@@ -57,10 +57,14 @@ project_name = options[:artifact_name]
 if(options[:maven]) then
   puts "Looking for a pom.xml file at #{resources_location}"
   pom_xml = Dir.glob("#{resources_location}/pom.xml").first
-  pom = REXML::Document.new File.new(pom_xml)
-  project_name = pom.elements["//artifactId"].first 
-  project_version = pom.elements["//version"].first
-  puts "Found maven project with name: #{project_name}, version: #{project_version}"
+  if(pom_xml) then
+    pom = REXML::Document.new File.new(pom_xml)
+    project_name = pom.elements["//artifactId"].first 
+    project_version = pom.elements["//version"].first
+    puts "Found maven project with name: #{project_name}, version: #{project_version}"
+  else
+    puts "--> ERROR: Cannot find any pom.xml file at #{resources_location}"
+  end
 end
 
 output_dir = JaxrsDoc::Site.new(processed_resources, Dir.pwd, {:project_version => project_version, :project_name => project_name}).generate
