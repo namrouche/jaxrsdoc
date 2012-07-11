@@ -92,6 +92,9 @@ if(options[:maven]) then
   end
 end
 
+project_version = options[:project_version] if(options[:project_version])
+project_name = options[:project_name] if(options[:project_name])
+
 output_dir = JaxrsDoc::Site.new(processed_resources, Dir.pwd, {:project_version => project_version, :project_name => project_name}).generate
 
 puts "Site generated. Open #{output_dir.path}/index.html"
