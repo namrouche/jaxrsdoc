@@ -30,6 +30,10 @@
 
       </header>
       <section>
+		        <h3>Prerequisites</h3>
+
+		<p>Install Ruby 1.9.x and the Ruby package manager rubygems</p>
+	
         <h3>Installation.</h3>
 
 <pre><code>$ gem install jaxrsdoc
@@ -43,19 +47,28 @@
 
 </code></pre>
 
-<p>Generate documentation for your maven project</p>
+<h3>Generate documentation</h3>
+
+<p>For a maven project</p>
 
 <pre><code>$ jaxrsdoc -m /Users/me/myprojects/mypetproject
 </code></pre>
 
-<p>Generate documentation for your maven project with specific resource naming</p>
+<p>For a maven project with specific resource naming</p>
 
 <pre><code>$ jaxrsdoc -m -p "*ResourceEntity.java" /Users/me/myprojects/mypetproject
 </code></pre>
 
-<p>Generate documentation for a non-maven project</p>
+</code></pre>
 
-<pre><code>$ jaxrsdoc -a "MyProjectName" -v "1.2.0" /Users/me/myprojects/mypetproject
+<p>For a maven project overriding the parsed maven project's name</p>
+
+<pre><code>$ jaxrsdoc -m -a MyArtifactName /Users/me/myprojects/mypetproject
+</code></pre>
+
+<p>For a non maven project specifying the name and version of the project</p>
+
+<pre><code>$ jaxrsdoc -a MyProjectName -r 1.2.0 /Users/me/myprojects/mypetproject
 </code></pre>
       </section>
       <footer>
