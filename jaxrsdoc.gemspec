@@ -7,6 +7,7 @@ Gem::Specification.new do |s|
   s.version = JaxrsDoc::VERSION
   s.platform = Gem::Platform::RUBY
   s.authors = ["Simon Caplette"]
+  s.homepage = "http://simcap.github.com/jaxrsdoc/"
   s.summary = %q{Website bootstrap style generator for your JAXRS REST API doc}
 
   s.rubyforge_project = "jaxrsdoc"
