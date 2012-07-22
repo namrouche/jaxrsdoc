@@ -1,4 +1,7 @@
 require File.expand_path("../annotations.rb", __FILE__)
+require 'javaparse'
+
+include JavaParse
 
 module JaxrsDoc
   
@@ -42,22 +45,20 @@ module JaxrsDoc
   end 
   
   module ResourceParser
-    include AnnotationScanner
     
     def self.parse(file)
+      @java_file = JavaUnit.new(file.path)
       @filename = File.basename(file.path)
-      parse_content(file.read)
+      parse_content
     end
     
-    def self.parse_content(text)
+    def self.parse_content
       verbs_annotations = {:gets => [], :posts => [], :puts => [], :deletes => []}
       descriptions = {}
-      java_sections = text.split(/(?<=\s)({)/);
-      resource_head_section = java_sections.shift
-      type_annotations = AnnotationScanner.scan_annotations(resource_head_section)
-      descriptions.update(ParamDescriptionScanner.scan_params_descriptions(resource_head_section))
-      type_description = parse_resource_description(resource_head_section)
-      java_sections.each { |section| 
+      type_annotations = AnnotationScanner.scan_annotations(@java_file.head.content)
+      descriptions.update(ParamDescriptionScanner.scan_params_descriptions(@java_file.head.content))
+      type_description = remove_params_description(@java_file.head.javadoc)
+      @java_file.method_blocks.each { |section| 
         group = AnnotationScanner.scan_annotations(section)
         descriptions.update(ParamDescriptionScanner.scan_params_descriptions(section))
         unless group.empty?
@@ -68,23 +69,17 @@ module JaxrsDoc
         end
       }
       JaxrsDoc::Resource.new(@filename, type_annotations, verbs_annotations, type_description, descriptions)
-    end 
+    end
     
-    private
+    private 
     
-    def self.parse_resource_description(head_text_section)
-      from_package_only_head_section = head_text_section.each_line.drop_while {|line|
-        not line.strip.start_with?("package")
-      }.join
-      
-      if (description_match = /^\/\*\*(.+)\*\/$/m.match(from_package_only_head_section))
-        full_text = description_match[1].gsub("*", "")
-        description = ""
-        full_text.each_line { |line|
-          description << line unless line.include?("@param")
-        }
-        description
-      end      
+    def self.remove_params_description(text)
+      return nil unless text
+      description = ""
+      text.each_line { |line|
+        description << line unless line.include?("@param")
+      }
+      description
     end
          
   end

@@ -1,0 +1,10 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    javaparse (0.0.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  javaparse
