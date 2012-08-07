@@ -60,7 +60,7 @@ module JaxrsDoc
       type_description = remove_params_description(@java_file.head.javadoc)
       @java_file.method_blocks.each { |section| 
         group = AnnotationScanner.scan_annotations(section.content)
-        group.javadoc = section.javadoc
+        group.javadoc = remove_params_description(section.javadoc)
         descriptions.update(ParamDescriptionScanner.scan_params_descriptions(section.content))
         unless group.empty?
           verbs_annotations[:gets] << group if(group.get)
