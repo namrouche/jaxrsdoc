@@ -95,7 +95,7 @@ module JaxrsDoc
         tokens.each { |v|
           @values << v.gsub(/\"|'/, "").strip
         }
-        @value = tokens.first.gsub(/\"|'/, "").strip 
+        @value = tokens.first.gsub(/\"|'/, "").strip unless tokens.empty?
       end
     end
     
