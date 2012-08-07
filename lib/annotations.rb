@@ -74,12 +74,17 @@ module JaxrsDoc
   
   class Annotation
     
-    attr_reader :name, :values, :value
+    attr_reader :name, :values
     
     def initialize(annotation_text)
+      @values = []
       @text = annotation_text.strip
       @name = @text.delete("@").split("(")[0]
       parse_values
+    end
+    
+    def value
+      @values[0]
     end
     
     def to_s
@@ -89,13 +94,11 @@ module JaxrsDoc
     private
     
     def parse_values
-      @values = []
       if(matches = /\((.*)\)/.match(@text))
         tokens = matches[1].split(",")
         tokens.each { |v|
           @values << v.gsub(/\"|'/, "").strip
         }
-        @value = tokens.first.gsub(/\"|'/, "").strip unless tokens.empty?
       end
     end
     
