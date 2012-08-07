@@ -62,13 +62,12 @@ module JaxrsDoc
           
             <div class="page-header">	
         	     <h1><% if resource.path %><%= resource.path.value %><% end %><pre class="pull-right"><%= resource.name %></pre></h1>
+                 <% if resource.description %>
+                 <div>
+                   <pre class="javadoc"><%= resource.description %></pre>
+                 </div>
+                 <% end %>
             </div>
-            
-            <% if resource.description %>
-            <div>
-              <pre><%= resource.description %></pre>
-            </div>
-            <% end %>
     
             <% resource.gets.each do |annot_group| %>
               <div class="row">	
