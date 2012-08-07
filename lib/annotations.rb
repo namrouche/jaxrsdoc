@@ -100,6 +100,10 @@ module JaxrsDoc
           @values << v.gsub(/\"|'/, "").strip
         }
       end
+      
+      @values.each { |v|
+        v.prepend("/") unless v.start_with?("/")
+      } if @name == 'Path'
     end
     
   end
