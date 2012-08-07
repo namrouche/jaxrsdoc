@@ -1,3 +1,7 @@
+h1 {
+	font-family: Lucida Grande !important;
+}
+
 pre.javadoc {
 	margin-top: 20px;
 	color: #0088CC;
@@ -8,28 +12,43 @@ pre.javadoc {
 	-webkit-box-shadow: 2px 2px 3px #000;
 }
 
+pre.verb-javadoc {
+	color: #0088CC;
+	background-color: white;
+	font-size: 1.0em;
+	box-shadow: 2px 2px 3px #000;
+	-moz-box-shadow: 2px 2px 3px #000;
+	-webkit-box-shadow: 2px 2px 3px #000;
+}
+
 table {
 	font-family: Lucida Grande;
 	font-size: 1.3em;
 }
 
+.verb {
+	margin-bottom: 0.5em;
+	margin-top: 0.6em;
+	box-shadow: 2px 2px 3px #000;
+	-moz-box-shadow: 2px 2px 3px #000;
+	-webkit-box-shadow: 2px 2px 3px #000;
+	border-radius: 4px 4px 4px 4px;
+	-moz-border-radius: 4px 4px 4px 4px;
+	-webkit-border-radius: 4px 4px 4px 4px;
+}
 
 .get {
-	margin-bottom: 0.5em;
-	background-color: #D6EAD6;
+	background-color: #D6EAD6 !important;
 }
 
 .post {
-	margin-bottom: 0.5em;
-	background-color: #EBF7FA;
+	background-color: #EBF7FA !important;
 }
 
 .put {
-	margin-bottom: 0.5em;
-	background-color: #FEEACD;
+	background-color: #FEEACD !important;
 }
 
 .delete {
-	margin-bottom: 0.5em;
-	background-color: #F0C8C7;
+	background-color: #F0C8C7 !important;
 }

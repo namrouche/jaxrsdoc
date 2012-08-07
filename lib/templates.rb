@@ -71,12 +71,18 @@ module JaxrsDoc
     
             <% resource.gets.each do |annot_group| %>
               <div class="row">	
-            		<div class="get span12">
+            		<div class="get verb span12">
                     <button class="btn btn-success pull-left disabled" href="#"><%= annot_group.get.name %></button>
                     <h3 class="pagination-centered"><% if annot_group.path %> <%= annot_group.path.value %> <% end %></h3>
                   </div>	
+                <% if annot_group.javadoc %>
+                  <div class="span12">
+                   <pre class="get verb-javadoc"><%= annot_group.javadoc %></pre>
+                  </div>
+                <% end %>
                </div>
-
+               
+               
         	     <% unless annot_group.queryparams.empty? %>
                <div class="row">	
              		<div class="span12">
@@ -103,10 +109,15 @@ module JaxrsDoc
       
             <% resource.posts.each do |annot_group| %>
               <div class="row">	
-            		<div class="post span12">
+            		<div class="post verb span12">
                     <button class="btn btn-info pull-left disabled" href="#"><%= annot_group.post.name %></button>
                     <h3 class="pagination-centered"><% if annot_group.path %> <%= annot_group.path.value %> <% end %></h3>
-                  </div>	
+                  </div>
+                  <% if annot_group.javadoc %>
+                    <div class="span12">
+                     <pre class="post verb-javadoc"><%= annot_group.javadoc %></pre>
+                    </div>
+                  <% end %>
                </div>
 
          	     <% unless annot_group.params.empty? %>
@@ -135,10 +146,15 @@ module JaxrsDoc
             
             <% resource.puts.each do |annot_group| %>
               <div class="row">	
-            		<div class="put span12">
+            		<div class="put verb span12">
                     <button class="btn btn-warning pull-left disabled" href="#"><%= annot_group.put.name %></button>
                     <h3 class="pagination-centered"><% if annot_group.path %> <%= annot_group.path.value %> <% end %></h3>
-                  </div>	
+                  </div>
+                  <% if annot_group.javadoc %>
+                    <div class="span12">
+                     <pre class="put verb-javadoc"><%= annot_group.javadoc %></pre>
+                    </div>
+                  <% end %>
                </div>
 
          	     <% unless annot_group.params.empty? %>
@@ -167,10 +183,15 @@ module JaxrsDoc
             
             <% resource.deletes.each do |annot_group| %>
               <div class="row">	
-            		<div class="post span12">
+            		<div class="delete verb span12">
                     <button class="btn btn-danger pull-left disabled" href="#"><%= annot_group.delete.name %></button>
                     <h3 class="pagination-centered"><% if annot_group.path %> <%= annot_group.path.value %> <% end %></h3>
                   </div>	
+                  <% if annot_group.javadoc %>
+                    <div class="span12">
+                     <pre class="delete verb-javadoc"><%= annot_group.javadoc %></pre>
+                    </div>
+                  <% end %>
                </div>
 
          	     <% unless annot_group.params.empty? %>

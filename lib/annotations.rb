@@ -44,6 +44,7 @@ module JaxrsDoc
   class AnnotationsGroup
     
     attr_reader :annotations
+    attr_accessor :javadoc
     
     def initialize(annotations = [])
       @annotations = Array.new(annotations)
