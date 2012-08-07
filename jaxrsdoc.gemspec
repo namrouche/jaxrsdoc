@@ -13,4 +13,5 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "jaxrsdoc"
   s.files = ["bin/jaxrsdoc", "lib/annotations.rb", "lib/jaxrsdoc_version.rb", "lib/parse.rb", "lib/site.rb", "lib/templates.rb", "site/bootstrap.css", "site/jaxrsdoc.css"]
   s.executables = ["jaxrsdoc"]
+  s.add_runtime_dependency('javaparse')  
 end
