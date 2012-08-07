@@ -1,7 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    javaparse (0.0.4)
+    javaparse (0.0.7)
 
 PLATFORMS
   ruby
